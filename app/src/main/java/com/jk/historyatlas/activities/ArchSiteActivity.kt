@@ -1,7 +1,8 @@
-package com.jk.historyatlas
+package com.jk.historyatlas.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.jk.historyatlas.R
 
 class ArchSiteActivity : AppCompatActivity() {
 
