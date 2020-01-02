@@ -51,9 +51,10 @@ class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
             foundarchsite.title = archsite.title
             foundarchsite.desc = archsite.desc
             foundarchsite.image = archsite.image
-            foundarchsite.lat = archsite.lat
-            foundarchsite.lng = archsite.lng
+            foundarchsite.location = archsite.location
             foundarchsite.visited = archsite.visited
+            foundarchsite.notes = archsite.notes
+
         }
         serialize()
     }

@@ -4,4 +4,8 @@
     <string name="button_addImage"> Add Image </string>
     <string name="hint_placemarkTitle">Placemark Title</string>
     <string name="hint_placemarkDesc">Description</string>
+    <string name="change_archsite_image">Change archsite image</string>
+    <string name="menu_showMap">Show Map</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_addArchSite">Add</string>
 </resources>

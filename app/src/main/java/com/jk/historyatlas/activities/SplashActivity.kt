@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
     private fun scheduleSplashScreen(){
         Handler().postDelayed({
             //change to ArchSiteListActivity
-            val intent = Intent(this, ArchSiteActivity::class.java)
+            val intent = Intent(this, ArchSiteListActivity::class.java)
             startActivity(intent)
         }, 2000)
     }
