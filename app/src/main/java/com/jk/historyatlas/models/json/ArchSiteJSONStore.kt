@@ -54,6 +54,7 @@ class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
             foundarchsite.location = archsite.location
             foundarchsite.visited = archsite.visited
             foundarchsite.notes = archsite.notes
+            foundarchsite.dateVisited = archsite.dateVisited
 
         }
         serialize()

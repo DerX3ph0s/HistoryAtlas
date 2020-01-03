@@ -15,6 +15,6 @@ class MainApp : Application(), AnkoLogger {
 
         archsites = ArchSiteJSONStore(applicationContext)
 
-        info("Placemark started")
+        info("HistoryAtlas started")
     }
 }

@@ -26,6 +26,7 @@ class ArchSiteListActivity : AppCompatActivity(), ArchSiteListener {
         app = application as MainApp
         toolbar.title = title
         setSupportActionBar(toolbar)
+        loadArchSites()
     }
 
     private fun loadArchSites() {
