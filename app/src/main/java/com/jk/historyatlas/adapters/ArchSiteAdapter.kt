@@ -39,6 +39,9 @@ class ArchSiteAdapter constructor(private var archsites: List<ArchSiteModel>, pr
             itemView.archsiteTitle.text = archsite.title
             itemView.lat.text = archsite.location.lat.toString()
             itemView.lng.text = archsite.location.lng.toString()
+            if (archsite.visited) {
+                itemView.visited.setChecked(true)
+            }
             // Checkbox TODO how to access Checkbox
             //itemView.visited = archsite.visited
             // ImageView TODO how to access array of string for imageView

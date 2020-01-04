@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.CheckBox
 import android.widget.DatePicker
 import com.jk.historyatlas.R
 import com.jk.historyatlas.helpers.readImage
@@ -67,10 +69,21 @@ class ArchSiteActivity : AppCompatActivity() {
                 cal.get(Calendar.DAY_OF_MONTH))
             dpd.show()
         }
+
+        checkBox.setOnClickListener( View.OnClickListener {
+            if (checkBox.isChecked){
+                archsite.visited = true
+            } else {
+                archsite.visited = false
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_archsite, menu)
+        if(edit){
+            menu?.findItem(R.id.item_delete)?.isVisible = true
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
