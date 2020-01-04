@@ -1,11 +1,13 @@
 package com.jk.historyatlas.activities
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.DatePicker
 import com.jk.historyatlas.R
 import com.jk.historyatlas.helpers.readImage
 import com.jk.historyatlas.helpers.readImageFromPath
@@ -14,6 +16,8 @@ import com.jk.historyatlas.main.MainApp
 import com.jk.historyatlas.models.ArchSiteModel
 import com.jk.historyatlas.models.Location
 import kotlinx.android.synthetic.main.activity_arch_site.*
+import org.jetbrains.anko.toast
+import java.util.*
 
 class ArchSiteActivity : AppCompatActivity() {
 
@@ -47,6 +51,22 @@ class ArchSiteActivity : AppCompatActivity() {
         chooseImage.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
         }
+
+        val cal = Calendar.getInstance()
+
+        val dateSetListener = DatePickerDialog.OnDateSetListener { view: DatePicker?, year: Int, month: Int, dayOfMonth: Int ->
+            archsite.dateVisited?.set(Calendar.YEAR, year)
+            archsite.dateVisited?.set(Calendar.MONTH, month)
+            archsite.dateVisited?.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        }
+
+        archsiteDateVisited.setOnClickListener {
+            val dpd = DatePickerDialog(this, dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH))
+            dpd.show()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -68,11 +88,17 @@ class ArchSiteActivity : AppCompatActivity() {
                 archsite.desc = archsiteDescription.text.toString()
                 archsite.notes = archsiteAdditionalNotes.text.toString()
                 //archsite.dateVisited = archsiteDateVisited.getDate()
-                if (edit) {
-                    app.archsites.update(archsite)
-                } else {
-                    app.archsites.create(archsite)
+                if (archsite.title.isEmpty()) {
+                    toast("Title is empty")
+                } else{
+                    if (edit) {
+                        app.archsites.update(archsite.copy())
+                    } else {
+                        app.archsites.create(archsite.copy())
+                        toast("New archsite created")
+                    }
                 }
+
                 setResult(AppCompatActivity.RESULT_OK)
                 finish()
             }

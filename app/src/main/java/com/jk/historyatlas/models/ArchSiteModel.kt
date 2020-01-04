@@ -10,7 +10,7 @@ data class ArchSiteModel(var id: Long = 0,
                          var desc: String = "",
                          var image: List<String> = listOf(),
                          var location: Location = Location(),
-                         var dateVisited: Date? = null,
+                         var dateVisited: Calendar? = null,
                          var visited: Boolean = false,
                          var notes: String = ""): Parcelable
 

@@ -12,5 +12,6 @@
     <string name="menu_save">Save</string>
     <string name="menu_delete">Delete</string>
     <string name="hint_archsiteAdditionalNotes">Additional Notes</string>
-    <string name="hint_archsiteDateVisited">Date Visited</string>
+    <string name="hint_archsiteDateVisited">Click to set Date</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

@@ -93,7 +93,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/archsiteDescription" />
 
-            <EditText
+            <TextView
                 android:id="@+id/archsiteDateVisited"
                 android:layout_width="230dp"
                 android:layout_height="45dp"

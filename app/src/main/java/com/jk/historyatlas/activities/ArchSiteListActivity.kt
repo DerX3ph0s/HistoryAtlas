@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jk.historyatlas.R
 import com.jk.historyatlas.adapters.ArchSiteAdapter
 import com.jk.historyatlas.adapters.ArchSiteListener
@@ -26,6 +27,10 @@ class ArchSiteListActivity : AppCompatActivity(), ArchSiteListener {
         app = application as MainApp
         toolbar.title = title
         setSupportActionBar(toolbar)
+
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = ArchSiteAdapter(app.archsites.findAll(), this)
         loadArchSites()
     }
 

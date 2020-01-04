@@ -71,9 +71,7 @@ class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
     }
 
     private fun serialize() {
-        val jsonString = gsonBuilder.toJson(archsites,
-            listType
-        )
+        val jsonString = gsonBuilder.toJson(archsites, listType)
         write(context, JSON_FILE, jsonString)
     }
 
