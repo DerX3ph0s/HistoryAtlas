@@ -1,5 +1,6 @@
 package com.jk.historyatlas.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -10,10 +11,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.CheckBox
 import android.widget.DatePicker
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.jk.historyatlas.R
-import com.jk.historyatlas.helpers.readImage
-import com.jk.historyatlas.helpers.readImageFromPath
-import com.jk.historyatlas.helpers.showImagePicker
+import com.jk.historyatlas.helpers.*
 import com.jk.historyatlas.main.MainApp
 import com.jk.historyatlas.models.ArchSiteModel
 import com.jk.historyatlas.models.Location
@@ -24,10 +31,15 @@ import java.util.*
 class ArchSiteActivity : AppCompatActivity() {
 
     var archsite = ArchSiteModel()
-    lateinit var app:MainApp
+    lateinit var app: MainApp
+    lateinit var map: GoogleMap
     val IMAGE_REQUEST = 1
     val LOCATION_REQUEST = 2
     var edit = false
+
+    lateinit var locationService: FusedLocationProviderClient
+    val locationRequest = createDefaultLocationRequest()
+    var defaultLocation = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +48,8 @@ class ArchSiteActivity : AppCompatActivity() {
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
 
+        locationService = LocationServices.getFusedLocationProviderClient(this)
+
         app = application as MainApp
 
         if (intent.hasExtra("archsite_edit")) {
@@ -43,6 +57,9 @@ class ArchSiteActivity : AppCompatActivity() {
             archsite = intent.extras?.getParcelable<ArchSiteModel>("archsite_edit")!!
             archsiteTitle.setText(archsite.title)
             archsiteDescription.setText(archsite.desc)
+            if (archsite.visited) {
+                checkBox.setChecked(true)
+            }
             //archsiteImage.setImageBitmap(readImageFromPath(this, archsite.image))
             if (archsite.image != null) {
                 chooseImage.setText(R.string.change_archsite_image)
@@ -71,12 +88,14 @@ class ArchSiteActivity : AppCompatActivity() {
         }
 
         checkBox.setOnClickListener( View.OnClickListener {
-            if (checkBox.isChecked){
-                archsite.visited = true
-            } else {
-                archsite.visited = false
-            }
+            archsite.visited = checkBox.isChecked
         })
+
+        mapView.onCreate(savedInstanceState)
+        mapView.getMapAsync {
+            doConfigureMap(it)
+            it.setOnMapClickListener { doSetLocation() }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -135,8 +154,100 @@ class ArchSiteActivity : AppCompatActivity() {
                     chooseImage.setText(R.string.change_archsite_image)
                 }
             }
+            LOCATION_REQUEST -> {
+                val location = data?.extras?.getParcelable<Location>("location")!!
+                archsite.location = location
+                locationUpdate(location)
+            }
 
         }
     }
 
+    // Maps
+
+    override fun onBackPressed() {
+        finish()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+        doResartLocationUpdates()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView.onSaveInstanceState(outState)
+    }
+
+    fun doSetLocation() {
+        intent = Intent(this, MapsActivity::class.java)
+        intent.putExtra("location", Location(archsite.location.lat, archsite.location.lng, archsite.location.zoom))
+        startActivityForResult(intent, LOCATION_REQUEST)
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun doSetCurrentLocation() {
+        locationService.lastLocation.addOnSuccessListener {
+            locationUpdate(Location(it.latitude, it.longitude))
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun doResartLocationUpdates() {
+        var locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult != null && locationResult.locations != null) {
+                    val l = locationResult.locations.last()
+                    locationUpdate(Location(l.latitude, l.longitude))
+                }
+            }
+        }
+        if (!edit) {
+            locationService.requestLocationUpdates(locationRequest, locationCallback, null)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        doRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    fun doRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (isPermissionGranted(requestCode, grantResults)) {
+            doSetCurrentLocation()
+        } else {
+            locationUpdate(defaultLocation)
+        }
+    }
+
+    fun doConfigureMap(m: GoogleMap) {
+        map = m
+        locationUpdate(archsite.location)
+    }
+
+    fun locationUpdate(location: Location) {
+        archsite.location = location
+        archsite.location.zoom = 15f
+        map?.clear()
+        val options = MarkerOptions().title(archsite.title).position(LatLng(archsite.location.lat, archsite.location.lng))
+        map?.addMarker(options)
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(archsite.location.lat, archsite.location.lng), archsite.location.zoom))
+        showLocation(archsite.location)
+    }
 }
