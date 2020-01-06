@@ -51,6 +51,7 @@ class ArchSiteListActivity : AppCompatActivity(), ArchSiteListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.item_add -> startActivityForResult<ArchSiteActivity>(0)
+            R.id.item_logout -> doLogout()
         }
 
         return super.onOptionsItemSelected(item)
@@ -63,5 +64,10 @@ class ArchSiteListActivity : AppCompatActivity(), ArchSiteListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         loadArchSites()
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    fun doLogout(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -42,8 +42,6 @@ class ArchSiteAdapter constructor(private var archsites: List<ArchSiteModel>, pr
             if (archsite.visited) {
                 itemView.visited.setChecked(true)
             }
-            // Checkbox TODO how to access Checkbox
-            //itemView.visited = archsite.visited
             // ImageView TODO how to access array of string for imageView
             //itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, archsite.image))
             itemView.setOnClickListener { listener.onArchSiteClick(archsite) }
