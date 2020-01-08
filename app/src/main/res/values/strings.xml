@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">HistoryAtlas</string>
+    <string name="select_archsite_image">Select ArchSite image</string>
+    <string name="button_addImage"> Add Image </string>
+    <string name="hint_archsiteTitle">ArchSite Title</string>
+    <string name="hint_archsiteDescription">Description</string>
+    <string name="change_archsite_image">Change Archsite image</string>
+    <string name="menu_showMap">Show Map</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_addArchSite">Add</string>
+    <string name="menu_cancel">Cancel</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_delete">Delete</string>
+    <string name="hint_archsiteAdditionalNotes">Additional Notes</string>
+    <string name="hint_archsiteDateVisited">Click to set Date</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_login">Signup/Login to HistoryAtlas</string>
+    <string name="menu_showSettings">Settings</string>
 </resources>
