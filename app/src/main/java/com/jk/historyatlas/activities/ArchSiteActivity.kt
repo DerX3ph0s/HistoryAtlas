@@ -47,6 +47,7 @@ class ArchSiteActivity : AppCompatActivity() {
 
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         locationService = LocationServices.getFusedLocationProviderClient(this)
 
@@ -57,6 +58,8 @@ class ArchSiteActivity : AppCompatActivity() {
             archsite = intent.extras?.getParcelable<ArchSiteModel>("archsite_edit")!!
             archsiteTitle.setText(archsite.title)
             archsiteDescription.setText(archsite.desc)
+            archsiteAdditionalNotes.setText(archsite.notes)
+            ratingBar.setRating(archsite.stars)
             if (archsite.visited) {
                 checkBox.setChecked(true)
             }
@@ -96,6 +99,9 @@ class ArchSiteActivity : AppCompatActivity() {
             doConfigureMap(it)
             it.setOnMapClickListener { doSetLocation() }
         }
+        if (checkLocationPermissions(this)) {
+            doSetCurrentLocation()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -119,6 +125,7 @@ class ArchSiteActivity : AppCompatActivity() {
                 archsite.title = archsiteTitle.text.toString()
                 archsite.desc = archsiteDescription.text.toString()
                 archsite.notes = archsiteAdditionalNotes.text.toString()
+                archsite.stars = ratingBar.getRating()
                 //archsite.dateVisited = archsiteDateVisited.getDate()
                 if (archsite.title.isEmpty()) {
                     toast("Title is empty")

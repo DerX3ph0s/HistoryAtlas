@@ -12,6 +12,7 @@ data class ArchSiteModel(var id: Long = 0,
                          var location: Location = Location(),
                          var dateVisited: Calendar? = null,
                          var visited: Boolean = false,
+                         var stars: Float = 0.0f,
                          var notes: String = ""): Parcelable
 
 @Parcelize

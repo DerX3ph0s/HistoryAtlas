@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.LoginActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -28,7 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ArchSiteActivity" />
+        <activity android:name=".activities.ArchSiteActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ArchSiteListActivity" />
+        </activity>
         <activity android:name=".activities.ArchSiteListActivity" />
     </application>
 

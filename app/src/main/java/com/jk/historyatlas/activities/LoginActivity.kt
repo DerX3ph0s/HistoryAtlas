@@ -41,10 +41,12 @@ class LoginActivity : AppCompatActivity() {
     fun doSignUp (email: String, password: String) {
         val intent = Intent(this, ArchSiteListActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
     fun doLogin (email: String, password: String) {
         val intent = Intent(this, ArchSiteListActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
