@@ -14,6 +14,7 @@ import com.jk.historyatlas.main.MainApp
 import com.jk.historyatlas.models.ArchSiteModel
 import kotlinx.android.synthetic.main.activity_arch_site_list.*
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
 
 class ArchSiteListActivity : AppCompatActivity(), ArchSiteListener {
@@ -52,8 +53,8 @@ class ArchSiteListActivity : AppCompatActivity(), ArchSiteListener {
         when (item?.itemId) {
             R.id.item_add -> startActivityForResult<ArchSiteActivity>(0)
             R.id.item_logout -> doLogout()
+            R.id.item_settings -> startActivityForResult<SettingsActivity>(1)
         }
-
         return super.onOptionsItemSelected(item)
     }
 

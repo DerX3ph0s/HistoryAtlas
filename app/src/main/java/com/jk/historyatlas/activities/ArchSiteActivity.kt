@@ -126,6 +126,7 @@ class ArchSiteActivity : AppCompatActivity() {
                 archsite.desc = archsiteDescription.text.toString()
                 archsite.notes = archsiteAdditionalNotes.text.toString()
                 archsite.stars = ratingBar.getRating()
+                archsite.email = app.userEmail
                 //archsite.dateVisited = archsiteDateVisited.getDate()
                 if (archsite.title.isEmpty()) {
                     toast("Title is empty")

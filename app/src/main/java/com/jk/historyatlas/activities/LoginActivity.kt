@@ -7,16 +7,20 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import com.google.firebase.auth.FirebaseAuth
 import com.jk.historyatlas.R
+import com.jk.historyatlas.main.MainApp
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.toast
 
 class LoginActivity : AppCompatActivity() {
 
     var auth: FirebaseAuth = FirebaseAuth.getInstance()
+    lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        app = application as MainApp
 
         toolbarLogin.title = getString(R.string.title_activity_login)
 
@@ -49,6 +53,7 @@ class LoginActivity : AppCompatActivity() {
         showProgress()
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                app.userEmail = email
                 val intent = Intent(this, ArchSiteListActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -63,6 +68,7 @@ class LoginActivity : AppCompatActivity() {
         showProgress()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
+                app.userEmail = email
                 val intent = Intent(this, ArchSiteListActivity::class.java)
                 startActivity(intent)
                 finish()

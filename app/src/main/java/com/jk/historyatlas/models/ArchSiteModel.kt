@@ -6,6 +6,7 @@ import java.util.*
 
 @Parcelize
 data class ArchSiteModel(var id: Long = 0,
+                         var email: String = "",
                          var title: String = "",
                          var desc: String = "",
                          var image: List<String> = listOf(),

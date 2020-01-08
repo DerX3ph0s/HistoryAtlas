@@ -10,6 +10,7 @@ import org.jetbrains.anko.AnkoLogger
 import com.jk.historyatlas.helpers.exists
 import com.jk.historyatlas.helpers.read
 import com.jk.historyatlas.helpers.write
+import com.jk.historyatlas.main.MainApp
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,18 +24,19 @@ fun generateRandomId(): Long {
 
 class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
 
-    val context: Context
     var archsites = mutableListOf<ArchSiteModel>()
+    var app: MainApp
 
-    constructor (context: Context) {
-        this.context = context
-        if (exists(context, JSON_FILE)) {
+    constructor (application: MainApp) {
+        app = application
+        if (exists(app, JSON_FILE)) {
             deserialize()
         }
     }
 
-    override fun findAll(): MutableList<ArchSiteModel> {
-        return archsites
+    override fun findAll(): List<ArchSiteModel> {
+        //filter
+        return archsites.filter {it.email == app.userEmail}
     }
 
     override fun create(archsite: ArchSiteModel) {
@@ -56,13 +58,13 @@ class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
             foundarchsite.notes = archsite.notes
             foundarchsite.dateVisited = archsite.dateVisited
             foundarchsite.stars = archsite.stars
-
+            foundarchsite.email = archsite.email
         }
         serialize()
     }
 
     override fun delete(archsite: ArchSiteModel) {
-        archsites.remove(archsite)
+        archsites.removeAll { it.id == archsite.id }
         serialize()
     }
 
@@ -73,11 +75,11 @@ class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(archsites, listType)
-        write(context, JSON_FILE, jsonString)
+        write(app, JSON_FILE, jsonString)
     }
 
     private fun deserialize() {
-        val jsonString = read(context, JSON_FILE)
+        val jsonString = read(app, JSON_FILE)
         archsites = Gson().fromJson(jsonString, listType)
     }
 
