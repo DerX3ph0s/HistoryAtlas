@@ -63,11 +63,12 @@ class ArchSiteActivity : AppCompatActivity() {
             if (archsite.visited) {
                 checkBox.setChecked(true)
             }
-            //archsiteImage.setImageBitmap(readImageFromPath(this, archsite.image))
+            archsiteImage.setImageBitmap(readImageFromPath(this, archsite.image))
             if (archsite.image != null) {
                 chooseImage.setText(R.string.change_archsite_image)
             }
             this.showLocation(archsite.location)
+            //this.locationUpdate(archsite.location)
         }
 
         chooseImage.setOnClickListener {
@@ -127,7 +128,7 @@ class ArchSiteActivity : AppCompatActivity() {
                 archsite.notes = archsiteAdditionalNotes.text.toString()
                 archsite.stars = ratingBar.getRating()
                 archsite.email = app.userEmail
-                //archsite.dateVisited = archsiteDateVisited.getDate()
+
                 if (archsite.title.isEmpty()) {
                     toast("Title is empty")
                 } else{
@@ -157,7 +158,7 @@ class ArchSiteActivity : AppCompatActivity() {
         when (requestCode) {
             IMAGE_REQUEST -> {
                 if (data != null) {
-                    //archsite.image = data.getData().toString()
+                    archsite.image = data.getData().toString()
                     archsiteImage.setImageBitmap(readImage(this, resultCode, data))
                     chooseImage.setText(R.string.change_archsite_image)
                 }

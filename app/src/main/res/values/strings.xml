@@ -17,4 +17,8 @@
     <string name="title_activity_login">Signup/Login to HistoryAtlas</string>
     <string name="menu_showSettings">Settings</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="useremail">User Email:</string>
+    <string name="allSites">Number of all Sites:</string>
+    <string name="visitedSites">Number of visited Sites:</string>
+    <string name="button_change_password">Change Password</string>
 </resources>

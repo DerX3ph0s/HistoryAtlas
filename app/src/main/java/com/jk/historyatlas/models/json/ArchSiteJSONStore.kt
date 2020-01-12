@@ -35,7 +35,6 @@ class ArchSiteJSONStore : ArchSiteStore, AnkoLogger {
     }
 
     override fun findAll(): List<ArchSiteModel> {
-        //filter
         return archsites.filter {it.email == app.userEmail}
     }
 
