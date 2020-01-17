@@ -68,19 +68,21 @@ class ArchSiteActivity : AppCompatActivity() {
                 chooseImage.setText(R.string.change_archsite_image)
             }
             this.showLocation(archsite.location)
-            //this.locationUpdate(archsite.location)
         }
 
         chooseImage.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
         }
 
-        val cal = Calendar.getInstance()
+        val cal = archsite.dateVisited ?: Calendar.getInstance()
 
         val dateSetListener = DatePickerDialog.OnDateSetListener { view: DatePicker?, year: Int, month: Int, dayOfMonth: Int ->
-            archsite.dateVisited?.set(Calendar.YEAR, year)
-            archsite.dateVisited?.set(Calendar.MONTH, month)
-            archsite.dateVisited?.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            cal.apply {
+                set(Calendar.YEAR, year)
+                set(Calendar.MONTH, month)
+                set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            }
+            archsite.dateVisited = cal
         }
 
         archsiteDateVisited.setOnClickListener {
@@ -101,7 +103,9 @@ class ArchSiteActivity : AppCompatActivity() {
             it.setOnMapClickListener { doSetLocation() }
         }
         if (checkLocationPermissions(this)) {
-            doSetCurrentLocation()
+            if (!edit) {
+                doSetCurrentLocation()
+            }
         }
     }
 
@@ -214,6 +218,7 @@ class ArchSiteActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     fun doSetCurrentLocation() {
         locationService.lastLocation.addOnSuccessListener {
+            it ?: return@addOnSuccessListener
             locationUpdate(Location(it.latitude, it.longitude))
         }
     }
@@ -259,4 +264,5 @@ class ArchSiteActivity : AppCompatActivity() {
         map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(archsite.location.lat, archsite.location.lng), archsite.location.zoom))
         showLocation(archsite.location)
     }
+
 }
