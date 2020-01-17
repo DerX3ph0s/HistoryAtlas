@@ -9,11 +9,12 @@ import org.jetbrains.anko.info
 class MainApp : Application(), AnkoLogger {
 
     lateinit var archsites: ArchSiteStore
+    lateinit var userEmail: String
 
     override fun onCreate() {
         super.onCreate()
 
-        archsites = ArchSiteJSONStore(applicationContext)
+        archsites = ArchSiteJSONStore(this)
 
         info("HistoryAtlas started")
     }
